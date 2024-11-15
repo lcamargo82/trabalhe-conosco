@@ -8,7 +8,8 @@
     "test": "jest",
     "format": "prettier --write .",
     "build": "tsc",
-    "start": "tsc && node dist/server.js"
+    "start": "tsc && node dist/server.js",
+    "migrate:prod": "node ./node_modules/.bin/typeorm migration:run -d ./dist/infrastructure/database/data-source.js"
   },
   "author": "Leandro Camargo",
   "license": "ISC",
