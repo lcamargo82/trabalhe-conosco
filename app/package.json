@@ -7,8 +7,8 @@
     "typeorm": "ts-node-dev node_modules/.bin/typeorm",
     "test": "jest",
     "format": "prettier --write .",
-    "start": "tsc && node dist/server.js",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/server.js",
   },
   "author": "Leandro Camargo",
   "license": "ISC",
