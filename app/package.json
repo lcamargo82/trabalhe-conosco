@@ -7,7 +7,7 @@
     "typeorm": "ts-node-dev node_modules/.bin/typeorm",
     "test": "jest",
     "format": "prettier --write .",
-    "start": "node server.js",
+    "start": "node src/server.js",
     "build": "npm install"
   },
   "author": "Leandro Camargo",
