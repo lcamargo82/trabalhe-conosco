@@ -63,11 +63,20 @@ Fazer as migrations:
 docker exec -it js_dev_container sh -c "cd /app/app && npm run typeorm migration:run -- -d ./src/infrastructure/database/data-source.ts"
 ```
 
-## Acesso à API
+## Documentaçào para testes Postman
+Na raiz do projeto está disponibilizado um arquivo, serasa.postman_collection, para ser importado no Postman.
+
+## Acesso à API - Desenvolvimento
 A API estará disponível em http://localhost:3000.
 
-## Acesso à documentação
+## Acesso à documentação - Desenvolvimento
 A API estará disponível em http://localhost:3000/api-documentation.
+
+## Acesso à API - Produção
+A API estará disponível em https://trabalhe-conosco.onrender.com.
+
+## Acesso à documentação - Produção
+A API estará disponível em https://trabalhe-conosco.onrender.com/api-documentation.
 
 ## Observações
 - Certifique-se de que suas portas no Docker não estejam em conflito com outras aplicações.
