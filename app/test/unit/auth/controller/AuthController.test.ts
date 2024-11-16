@@ -29,10 +29,12 @@ describe('AuthController Tests', () => {
       cpf_cnpj: '51255212055',
       created_at: new Date(),
       updated_at: null,
-      deleted_at: null
+      deleted_at: null,
     } as ProducerEntity;
 
-    (ProducerService.prototype.createProducer as jest.Mock).mockResolvedValue(mockProducer);
+    (ProducerService.prototype.createProducer as jest.Mock).mockResolvedValue(
+      mockProducer
+    );
   });
 
   it('should create a producer successfully', async () => {
@@ -58,16 +60,20 @@ describe('AuthController Tests', () => {
 
   it('should handle errors in createProducer', async () => {
     const error = new Error('Failed to create producer');
-    (ProducerService.prototype.createProducer as jest.Mock).mockRejectedValue(error);
-  
+    (ProducerService.prototype.createProducer as jest.Mock).mockRejectedValue(
+      error
+    );
+
     await AuthController.createProducer(
       mockRequest as Request,
       mockResponse as Response,
       mockNext
     );
-  
+
     expect(mockResponse.status).toHaveBeenCalledWith(500);
-    expect(mockResponse.json).toHaveBeenCalledWith({ error: 'Error creating producer' });
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      error: 'Error creating producer',
+    });
   });
 
   it('should handle login successfully', async () => {
@@ -75,32 +81,37 @@ describe('AuthController Tests', () => {
       email: 'producer@example.com',
       password: 'password123',
     };
-  
+
     const mockToken = 'mock.jwt.token';
-    
+
     (AuthService.prototype.login as jest.Mock).mockResolvedValue(mockToken);
-  
+
     await AuthController.login(
       mockRequest as Request,
       mockResponse as Response,
       mockNext
     );
-  
-    expect(mockResponse.status).toHaveBeenCalledWith(200); 
-    expect(mockResponse.json).toHaveBeenCalledWith({ message: 'Login successful', token: mockToken });
+
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      message: 'Login successful',
+      token: mockToken,
+    });
   });
 
   it('should handle errors in login', async () => {
     const error = new Error('Invalid credentials');
     (AuthService.prototype.login as jest.Mock).mockRejectedValue(error);
-  
+
     await AuthController.login(
       mockRequest as Request,
       mockResponse as Response,
       mockNext
     );
-  
+
     expect(mockResponse.status).toHaveBeenCalledWith(401);
-    expect(mockResponse.json).toHaveBeenCalledWith({ error: 'Invalid email or password' });
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      error: 'Invalid email or password',
+    });
   });
 });

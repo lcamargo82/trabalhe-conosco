@@ -4,7 +4,7 @@ module.exports = {
   coverageDirectory: './coverage',
   collectCoverage: true,
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js'],
 };

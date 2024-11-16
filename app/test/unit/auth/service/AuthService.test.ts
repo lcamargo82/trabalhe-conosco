@@ -14,7 +14,8 @@ describe('AuthService', () => {
   let mockProducer: ProducerEntity;
 
   beforeEach(() => {
-    mockProducerRepository = new ProducerRepository() as jest.Mocked<ProducerRepository>;
+    mockProducerRepository =
+      new ProducerRepository() as jest.Mocked<ProducerRepository>;
     authService = new AuthService();
     (authService as any).producerRepository = mockProducerRepository;
 
@@ -26,36 +27,41 @@ describe('AuthService', () => {
       cpf_cnpj: '51255212055',
       created_at: new Date(),
       updated_at: null,
-      deleted_at: null
+      deleted_at: null,
     } as ProducerEntity;
   });
 
   it('should return a token if email and password are valid', async () => {
     mockProducerRepository.findByEmail.mockResolvedValue(mockProducer);
-    (bcrypt.compare as jest.Mock).mockResolvedValue(true); 
+    (bcrypt.compare as jest.Mock).mockResolvedValue(true);
     (jwt.sign as jest.Mock).mockReturnValue('mockedToken');
 
-    const token = await authService.login('producer@example.com', 'password123');
+    const token = await authService.login(
+      'producer@example.com',
+      'password123'
+    );
 
     expect(token).toBe('mockedToken');
-    expect(mockProducerRepository.findByEmail).toHaveBeenCalledWith('producer@example.com');
+    expect(mockProducerRepository.findByEmail).toHaveBeenCalledWith(
+      'producer@example.com'
+    );
     expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'password123');
   });
 
   it('should throw an error if email is not found', async () => {
     mockProducerRepository.findByEmail.mockResolvedValue(null);
 
-    await expect(authService.login('invalid@example.com', 'password123')).rejects.toThrow(
-      'Invalid email or password'
-    );
+    await expect(
+      authService.login('invalid@example.com', 'password123')
+    ).rejects.toThrow('Invalid email or password');
   });
 
   it('should throw an error if password is invalid', async () => {
     mockProducerRepository.findByEmail.mockResolvedValue(mockProducer);
     (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
-    await expect(authService.login('test@example.com', 'wrongpassword')).rejects.toThrow(
-      'Invalid email or password'
-    );
+    await expect(
+      authService.login('test@example.com', 'wrongpassword')
+    ).rejects.toThrow('Invalid email or password');
   });
 });
