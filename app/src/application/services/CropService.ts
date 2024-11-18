@@ -30,7 +30,7 @@ class CropService {
     }
   }
 
-  async createCrop(data: CropDTO): Promise<CropEntity> {
+  async createCrop(data: Omit<CropDTO, 'id'>): Promise<CropEntity> {
     const crop = new CropEntity();
     crop.name = data.name;
 

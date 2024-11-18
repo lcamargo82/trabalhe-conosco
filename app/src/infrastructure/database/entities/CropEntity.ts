@@ -21,7 +21,7 @@ export class CropEntity {
   created_at: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at: Date | null;
 
   @DeleteDateColumn()
   deleted_at: Date | null;
