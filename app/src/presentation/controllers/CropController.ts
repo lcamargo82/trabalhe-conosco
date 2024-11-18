@@ -12,7 +12,9 @@ class CropController {
     try {
       const crops = await this.cropService.getAllCrop();
 
-      res.status(200).json({ message: 'Crop retrieved successfully', crop: crops });
+      res
+        .status(200)
+        .json({ message: 'Crop retrieved successfully', crop: crops });
     } catch (error) {
       res.status(500).json({ error: 'Error retrieving crop' });
     }

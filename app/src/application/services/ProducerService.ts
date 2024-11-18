@@ -1,16 +1,11 @@
 import { ProducerDTO } from '../../presentation/dto/ProducerDTO';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import ProducerRepository from '../../infrastructure/repositories/ProducerRepository';
 import { ProducerEntity } from '../../infrastructure/database/entities/ProducerEntity';
+import ProducerRepository from '../../infrastructure/repositories/ProducerRepository';
 import CpfCnpjValueObject from '../../domain/valueObjects/CpfCnpjValueObject';
 
 class ProducerService {
-  private producerRepository = new ProducerRepository();
-
-  constructor() {
-    this.producerRepository = new ProducerRepository();
-  }
+  constructor(private producerRepository: ProducerRepository) {}
 
   async getProducer(id: number): Promise<ProducerEntity | null> {
     try {
@@ -21,9 +16,7 @@ class ProducerService {
     }
   }
 
-  async createProducer(data: ProducerDTO): Promise<ProducerEntity> {
-    new CpfCnpjValueObject(data.cpf_cnpj);
-
+  async createProducer(data: Omit<ProducerDTO, 'id'>): Promise<ProducerEntity> {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const producer = new ProducerEntity();
     producer.name = data.name;
@@ -43,8 +36,6 @@ class ProducerService {
       if (!producer) {
         return null;
       }
-
-      new CpfCnpjValueObject(producerData.cpf_cnpj);
 
       producer.name = producerData.name;
       producer.email = producerData.email;

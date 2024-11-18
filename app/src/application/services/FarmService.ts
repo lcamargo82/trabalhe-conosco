@@ -28,7 +28,7 @@ class FarmService {
     }
   }
 
-  async createFarm(data: FarmDTO, producerId: number): Promise<FarmEntity> {
+  async createFarm(data: Omit<FarmDTO, 'id'>, producerId: number): Promise<FarmEntity> {
     this.validateFarmArea(data);
 
     const producer = await this.producerRepository.findById(producerId);

@@ -11,7 +11,9 @@ describe('CropService', () => {
   let mockCrop: CropEntity;
 
   beforeEach(() => {
-    mockCropRepository = new CropRepository(AppDataSource.manager) as jest.Mocked<CropRepository>;
+    mockCropRepository = new CropRepository(
+      AppDataSource.manager
+    ) as jest.Mocked<CropRepository>;
     cropService = new CropService();
     (cropService as any).cropRepository = mockCropRepository;
 
@@ -21,7 +23,7 @@ describe('CropService', () => {
       created_at: new Date(),
       updated_at: null,
       deleted_at: null,
-      farms: []
+      farms: [],
     } as CropEntity;
   });
 
@@ -49,14 +51,19 @@ describe('CropService', () => {
     const crop = await cropService.createCrop({ name: 'Corn' });
 
     expect(crop).toEqual(mockCrop);
-    expect(mockCropRepository.save).toHaveBeenCalledWith(expect.objectContaining({ name: 'Corn' }));
+    expect(mockCropRepository.save).toHaveBeenCalledWith(
+      expect.objectContaining({ name: 'Corn' })
+    );
   });
 
   it('should update a crop', async () => {
     mockCropRepository.findById.mockResolvedValue(mockCrop);
     mockCropRepository.save.mockResolvedValue(mockCrop);
 
-    const updatedCrop = await cropService.updateCrop(1, { id: 1, name: 'Updated Corn' });
+    const updatedCrop = await cropService.updateCrop(1, {
+      id: 1,
+      name: 'Updated Corn',
+    });
 
     expect(updatedCrop).toEqual(mockCrop);
     expect(mockCropRepository.findById).toHaveBeenCalledWith(1);
@@ -67,7 +74,7 @@ describe('CropService', () => {
 
   it('should delete a crop', async () => {
     mockCropRepository.findById.mockResolvedValue(mockCrop);
-    mockCropRepository.delete.mockResolvedValue(true); 
+    mockCropRepository.delete.mockResolvedValue(true);
 
     const result = await cropService.deleteCrop(1);
 
@@ -76,6 +83,5 @@ describe('CropService', () => {
     expect(mockCropRepository.delete).toHaveBeenCalledWith(1);
   });
 
-  it('should return some other behavior', async () => {
-  });
+  it('should return some other behavior', async () => {});
 });

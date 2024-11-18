@@ -2,10 +2,17 @@ import { Request, Response, RequestHandler } from 'express';
 import AuthService from '../../application/services/AuthService';
 import { ProducerDTO } from '../dto/ProducerDTO';
 import ProducerService from '../../application/services/ProducerService';
+import ProducerRepository from '../../infrastructure/repositories/ProducerRepository'
 
 class AuthController {
-  private authService = new AuthService();
-  private producerService = new ProducerService();
+  private authService: AuthService;
+  private producerService: ProducerService;
+
+  constructor() {
+    const producerRepository = new ProducerRepository();
+    this.authService = new AuthService();
+    this.producerService = new ProducerService(producerRepository);
+  }
 
   createProducer: RequestHandler = async (
     req: Request,
@@ -19,6 +26,7 @@ class AuthController {
         .status(200)
         .json({ message: 'Producer created successfully', producer: producer });
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error: 'Error creating producer' });
     }
   };

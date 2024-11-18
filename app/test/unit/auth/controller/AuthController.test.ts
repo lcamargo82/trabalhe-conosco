@@ -3,6 +3,7 @@ import AuthController from '../../../../src/presentation/controllers/AuthControl
 import ProducerService from '../../../../src/application/services/ProducerService';
 import AuthService from '../../../../src/application/services/AuthService';
 import { ProducerEntity } from '../../../../src/infrastructure/database/entities/ProducerEntity';
+import ProducerRepository from '../../../../src/infrastructure/repositories/ProducerRepository';
 
 jest.mock('../../../../src/application/services/ProducerService');
 jest.mock('../../../../src/application/services/AuthService');
@@ -12,8 +13,18 @@ describe('AuthController Tests', () => {
   let mockResponse: Partial<Response>;
   let mockNext: NextFunction;
   let mockProducer: ProducerEntity;
+  let mockProducerRepository: jest.Mocked<ProducerRepository>;
+  let producerService: ProducerService;
+  let authService: AuthService;
 
   beforeEach(() => {
+    mockProducerRepository = new ProducerRepository() as jest.Mocked<ProducerRepository>;
+
+    producerService = new ProducerService(mockProducerRepository);
+
+    authService = new AuthService();
+    (authService as any).producerRepository = mockProducerRepository;
+
     mockRequest = {};
     mockResponse = {
       status: jest.fn().mockReturnThis(),
@@ -32,9 +43,7 @@ describe('AuthController Tests', () => {
       deleted_at: null,
     } as ProducerEntity;
 
-    (ProducerService.prototype.createProducer as jest.Mock).mockResolvedValue(
-      mockProducer
-    );
+    (ProducerService.prototype.createProducer as jest.Mock).mockResolvedValue(mockProducer);
   });
 
   it('should create a producer successfully', async () => {
@@ -60,9 +69,7 @@ describe('AuthController Tests', () => {
 
   it('should handle errors in createProducer', async () => {
     const error = new Error('Failed to create producer');
-    (ProducerService.prototype.createProducer as jest.Mock).mockRejectedValue(
-      error
-    );
+    (ProducerService.prototype.createProducer as jest.Mock).mockRejectedValue(error);
 
     await AuthController.createProducer(
       mockRequest as Request,

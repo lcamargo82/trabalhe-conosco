@@ -9,7 +9,7 @@ class CpfCnpjValueObject {
     }
   }
 
-  private isValid(): boolean {
+  public isValid(): boolean {
     const length = this.value.length;
 
     if (length === 11) {
